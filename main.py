@@ -7,6 +7,7 @@ doelbestandgemixt = "target"
 
 # Importeer de juiste tools en funcs.
 from mapper import padding, pairing, createbigram
+from reducer import mergebigrams
 # Laad het bestand in
 with open(doelbestandnederlands) as infile:
     stdinnl = infile.readlines()
@@ -29,12 +30,12 @@ matricesen = list(map(createbigram,pairingen))
 matricesmx = list(map(createbigram,pairingmx))
 # TODO: Al deze functies/calls kunnen samengevoegd worden in een grote functie.
 # Reducer 1: voegt de aparte bigrams samen (hoeft eigenlijk alleen maar gebruikt te worden voor het trainen)
-bigmatricenl = list(reduce())
-bigmatriceen = list(reduce())
+bigmatricenl = reduce(mergebigrams, matricesnl)
+bigmatriceen = reduce(mergebigrams, matricesen)
 
 
 # Eerste reducer; breng alles onder tot een matrix (bigram) per regel.
 # print(stdin)
 # print(pairing[0])
-print(matrices)
+print(bigmatricenl)
 # print(mapfunc("Hallo"))
