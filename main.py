@@ -7,7 +7,7 @@ doelbestandgemixt = "target"
 
 # Importeer de juiste tools en funcs.
 from mapper import createbigrams
-from reducer import mergebigrams, mergesubbigrams
+from reducer import mergebigrams
 # Laad het bestand in
 # with open(doelbestandnederlands) as infile:
 #     stdinnl = infile.readlines()
