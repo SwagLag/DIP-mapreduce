@@ -37,5 +37,5 @@ bigmatriceen = reduce(mergebigrams, matricesen)
 # Eerste reducer; breng alles onder tot een matrix (bigram) per regel.
 # print(stdin)
 # print(pairing[0])
-print(bigmatricenl)
+# print(bigmatricenl)
 # print(mapfunc("Hallo"))
