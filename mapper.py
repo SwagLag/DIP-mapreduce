@@ -28,20 +28,6 @@ def createbigram(pairs:str) -> np.array:
         base[alphabetkey.find(pair[0])][alphabetkey.find(pair[1])] = 1
     return base
 
-def createfreqbigram(bigram:np.array) -> np.array:
-    """Creates a frequency bigram from a normal bigram."""
-    sums = 0
-    newgram = np.full(bigram.shape,0)
-    # Step 1: Get the sum of all occurences.
-    for x in range(len(bigram)):
-        for y in range(len(bigram)):
-            sums += bigram[x][y]
-    # Step 2: Get frequency (frequency = amount of times / sum)
-    for x in range(len(bigram)):
-        for y in range(len(bigram)):
-            newgram[x][y] = bigram[x][y] / sums
-    return newgram
-
 def createbigrams(segment:str):
     """Creates a set of bigrams from a given segment for each pair. These should
     be reduced later using the reducer function; mergebigrams(a,b)."""
@@ -57,9 +43,18 @@ def createbigrams(segment:str):
         pairs.append("{}{}".format(padding[i],padding[i+1]))
     # Step 3: Create bigram
     for pair in pairs:
-        bigram[alphabetkey.find(pair[0])][alphabetkey.find(pair[1])] = 1
+        try:
+            # str.find(letter) geeft -1 terug als hij geen valide letter vindt. We kunnen dat goed benutten op deze manier.
+            # Hiermee slaan we letters die niet in de alphabetkey zitten over, door er None van te maken en een exception
+            # te veroorzaken en zo bij de except te komen.
+            firstletter = alphabetkey.find(pair[0]) if alphabetkey.find(pair[0]) >= 0 else None
+            secondletter = alphabetkey.find(pair[1]) if alphabetkey.find(pair[1]) >= 0 else None
+            bigram[alphabetkey.find(pair[0])][alphabetkey.find(pair[1])] = 1
+        except:
+            print("DEBUG: Could not find letters in alphabetkey: pair: ({}{})".format(pair[0],pair[1]))
+            continue
         # sums += 1
     # Step 4: Convert to frequency (value between 0 to 1)
-    bigramnew = createfreqbigram(bigram)
+    # bigramnew = createfreqbigram(bigram)
     # Done, return bigrams.
-    return bigramnew
+    return bigram
