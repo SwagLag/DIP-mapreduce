@@ -35,7 +35,7 @@ tenslotte met een aparte functie omgezet wordt tot een kansverdelingstabel.
 
 Voorbeeld array van kansverdeling voor Nederlands:
 
-[Input screenshot docimages/pycharm64_3eY3OltY9j.png]
+![alt text](https://github.com/SwagLag/DIP-mapreduce/blob/main/docimages/pycharm64_3eY3OltY9j.png?raw=true)
 
 In de tweede stap wordt van de tekst met engelse en nederlandse
 regels door elkaar deels hetzelfde gedaan; van regels naar paren
@@ -58,4 +58,4 @@ algoritme. Uiteindelijk klassificeerde hij in totaal 12 labels fout (het hoort
 
 Uiteindelijke output:
 
-[Input screenshot docimages/pycharm64_lXcrSmeuW6.png]
+![alt text](https://github.com/SwagLag/DIP-mapreduce/blob/main/docimages/pycharm64_lXcrSmeuW6.png?raw=true)
