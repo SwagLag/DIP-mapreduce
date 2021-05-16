@@ -1,44 +1,67 @@
+import numpy as np
+from mapper import createbigrams
+from reducer import mergebigrams, getsummatrice, differencebigrams
+from helper import createfreqbigram
 from functools import reduce
 
-# Variabelen
-doelbestandnederlands = "dutchtext"
-doelbestandengels = "englishtext"
-doelbestandgemixt = "target"
+# In deze main opgave stellen we twee kansverdelingstabellen op die gebruikt worden in
+# het klassificeer-algoritme en passen we dit algoritme toe op teksten met gemixte talen.
 
-# Importeer de juiste tools en funcs.
-from mapper import createbigrams
-from reducer import mergebigrams
-# Laad het bestand in
-# with open(doelbestandnederlands) as infile:
-#     stdinnl = infile.readlines()
-# with open(doelbestandengels) as infile:
-#     stdinen = infile.readlines()
-with open(doelbestandgemixt) as infile:
-    stdinmx = infile.readlines()
-# Mapper 0: maakt een kleine voorbereiding per segment; door een padding toe te voegen worden ook de eerste en laatste letters
-# meegeteld.
-# paddednl = list(map(padding,stdinnl))
-# paddeden = list(map(padding,stdinen))
-# paddedmx = list(map(padding,stdinmx))
-# Mapper 1: haalt de letterparen op.
-# pairingnl = list(map(pairing,paddednl))
-# pairingen = list(map(pairing,paddeden))
-# pairingmx = list(map(pairing,paddedmx))
-# Mapper 2: maakt van ieder paar een bigram
-# matricesnl = list(map(createbigram,pairingnl))
-# matricesen = list(map(createbigram,pairingen))
-# matricesmx = list(map(createbigram,pairingmx))
+englishtarget = "englishtext"
+dutchtarget = "dutchtext"
+mixedtarget = "target"
 
-# TODO: Al deze functies/calls kunnen samengevoegd worden in een grote functie.
-# Reducer 1: voegt de aparte bigrams samen (hoeft eigenlijk alleen maar gebruikt te worden voor het trainen)
-# bigmatricenl = reduce(mergebigrams, matricesnl)
-# bigmatriceen = reduce(mergebigrams, matricesen)
-preredbigmatrices = list(map(createbigrams, stdinmx))
-print(preredbigmatrices)
-# redbigmatrices = reduce(mergesubbigrams, preredbigmatrices)
-print("debug access")
-# Eerste reducer; breng alles onder tot een matrix (bigram) per regel.
-# print(stdin)
-# print(pairing[0])
-# print(bigmatricenl)
-# print(mapfunc("Hallo"))
+# Mapreduce 1: Nederlandse kansverdelingmatrix ophalen
+# Stap 1: Lees bestand in
+with open(dutchtarget) as infile:
+    linesnl = infile.readlines()
+# Stap 2: Maak bigrams van alle regels (map)
+bigramsnl = list(map(createbigrams,linesnl))
+# Stap 3: Voeg de bigrammen samen (reduce)
+totalbigramnl = reduce(mergebigrams,bigramsnl)
+# Stap 4: Maak er een kansverdeling van (waardes
+# worden vertaald naar 0-1 waar waarde = waarde/n, waar n de som is van alle elementen)
+freqbigramnl = createfreqbigram(totalbigramnl)
+
+# Mapreduce 2: Engelse kansverdelingmatrix ophalen
+target = "englishtext"
+# Stap 1: Lees bestand in
+with open(target) as infile:
+    linesen = infile.readlines()
+# Stap 2: Maak bigrams van alle regels (map)
+bigramsen = list(map(createbigrams, linesen))
+# Stap 3: Voeg de bigrammen samen (reduce)
+totalbigramen = reduce(mergebigrams,bigramsen)
+# Stap 4: Maak er een kansverdeling van (waardes
+# worden vertaald naar 0-1 waar waarde = waarde/n, waar n de som is van alle elementen)
+freqbigramen = createfreqbigram(totalbigramen)  # Een enkele matrix is terugegeven, map() is niet persee nodig hier.
+
+# Mapreduce 3: Klassificeer de regels uit het gemixte bestand.
+# Om dit te kunnen doen (en door limitaties van python en map()) stellen we de functie hier op.
+# Door dit te doen kunnen we de matrixen inbouwen in de functie en kan de functie gewoon gebruikt
+# worden in de map() functie.
+
+def entropy_classifier(matrix:np.array):
+    """Classifies a given bigram matrix by comparing it to the other matrices in this file."""
+    # 2 talen ingeprogrammeerd, we moeten dus de 'error' uitrekenen tussen twee matrixen.
+    labels = ["engels", "nederlands"]
+    bigrams = [freqbigramen, freqbigramnl]
+    preerrors = [0,0]
+    errors = list(map(differencebigrams,bigrams,[matrix] * len(preerrors)))
+    abserrors = list(map(abs,errors))
+    sums = list(map(getsummatrice,abserrors))
+    # Sommeer de arrays nu.
+    # for i in range(len(errors)):
+    #     errors[i] = abs(differencebigrams(bigrams[i],matrix))
+    return labels[sums.index(min(sums))]
+# Stap 1: Lees het bestand eerst weer in.
+with open(mixedtarget) as infile:
+    lines = infile.readlines()
+# Stap 2: Maak bigrams van alle regels (map)
+bigrams = list(map(createbigrams,lines))
+# Stap 3: Maak van alle bigrams frequentietabellen (map)
+freqbigrams = list(map(createfreqbigram, bigrams))
+# Stap 4: Klassificeer de matrixen met het eerder opgestelde algoritme (map)
+labels = list(map(entropy_classifier, freqbigrams))
+print(labels.count("nederlands"))
+print(labels.count("engels"))

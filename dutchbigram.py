@@ -1,5 +1,5 @@
 from mapper import createbigrams
-from reducer import mergebigrams
+from reducer import mergebigrams, getsummatrice
 from helper import createfreqbigram
 from functools import reduce
 target = "dutchtext"
@@ -10,4 +10,6 @@ with open(target) as infile:
 bigrams = list(map(createbigrams, lines))
 # Stap 3: Voeg de bigrammen samen (reduce)
 totalbigram = reduce(mergebigrams,bigrams)
+print(getsummatrice(totalbigram))
 freqbigram = createfreqbigram(totalbigram)
+print(freqbigram)
