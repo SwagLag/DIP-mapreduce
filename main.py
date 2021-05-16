@@ -1,6 +1,6 @@
 import numpy as np
 from mapper import createbigrams
-from reducer import mergebigrams, getsummatrice, differencebigrams
+from reducer import mergebigrams, getsummatrice, differencebigrams, labelreducer
 from helper import createfreqbigram
 from functools import reduce
 
@@ -50,10 +50,8 @@ def entropy_classifier(matrix:np.array):
     errors = list(map(differencebigrams,bigrams,[matrix] * len(preerrors)))
     abserrors = list(map(abs,errors))
     sums = list(map(getsummatrice,abserrors))
-    # Sommeer de arrays nu.
-    # for i in range(len(errors)):
-    #     errors[i] = abs(differencebigrams(bigrams[i],matrix))
     return labels[sums.index(min(sums))]
+
 # Stap 1: Lees het bestand eerst weer in.
 with open(mixedtarget) as infile:
     lines = infile.readlines()
@@ -63,5 +61,6 @@ bigrams = list(map(createbigrams,lines))
 freqbigrams = list(map(createfreqbigram, bigrams))
 # Stap 4: Klassificeer de matrixen met het eerder opgestelde algoritme (map)
 labels = list(map(entropy_classifier, freqbigrams))
-print(labels.count("nederlands"))
-print(labels.count("engels"))
+# Stap 5: Breng de labels samen tot een enkele dictionary (reduce)
+labeldict = reduce(labelreducer,labels,{"engels":0,"nederlands":0})
+print(labeldict)

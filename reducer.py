@@ -33,6 +33,13 @@ def getsummatrice(bigram:np.array) -> np.array:
     """Gets the sum of a bigram matrice."""
     return reduce(my_adder,list(map(sum,bigram)))
 
+def labelreducer(dictnary:dict,label:str):
+    """Reduces a list of labels to a dictionary containg a count
+    for each label when used with reduce()."""
+    if label in dictnary.keys():
+        dictnary[label] += 1
+    return dictnary
+
 # def mergesubbigrams(subbigrams: list):
 #     """Merges two subbigrams (coming from createbigrams())"""
 #     mergeds = []
