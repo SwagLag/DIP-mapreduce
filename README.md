@@ -35,6 +35,14 @@ engelse zinnen.
 - dutchtarget: hetzelfde als englishtarget, maar dan op nederlandse zinnen.
 - mixedtarget: de uiteindelijk te classificeren tekst met regels.
 
+Verder kan je ook de alfabetkey aanpassen; dit is een string waar alleen de
+characters die voorkomen in de string meegeteld worden in de matrixen.
+Verder vertaalt de index van een character in deze string zich ook naar
+de plaats waar hij hoort te staan in de matrix.
+
+Als dit allemaal ingesteld is is het heel simpel om de code te draaien;
+run simpelweg gewoon main.py.
+
 # Screenshots & Uitleg code
 De code werkt als volgt;
 
