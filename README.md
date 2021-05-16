@@ -21,6 +21,20 @@ Bevat de functies voor het samenvoegen van de bigramtabellen waarbij
 het structuur behouden wordt en alleen de waardes bij elkaar opgeteld
 worden.
 
+# Instructies
+Om de code zelf te runnen moet je eerst ervoor zorgen dat alles in
+requirement.txt is gedownload. In principe is dat alleen maar numpy voor de arrays;
+voor de rest wordt gebruik gemaakt van ingebouwde python modules.
+
+Om doelwitbestanden aan te wijzen voor trainen van Nederlands en Engels,
+en de uiteindelijk te classificeren bestand, kan je een paar variabelen in
+main.py aanpassen;
+
+- englishtarget: definieert het tekstbestand waarmee getraind wordt op
+engelse zinnen.
+- dutchtarget: hetzelfde als englishtarget, maar dan op nederlandse zinnen.
+- mixedtarget: de uiteindelijk te classificeren tekst met regels.
+
 # Screenshots & Uitleg code
 De code werkt als volgt;
 
@@ -35,7 +49,7 @@ tenslotte met een aparte functie omgezet wordt tot een kansverdelingstabel.
 
 Voorbeeld array van kansverdeling voor Nederlands:
 
-![alt text](https://github.com/SwagLag/DIP-mapreduce/blob/main/docimages/pycharm64_3eY3OltY9j.png?raw=true)
+![screenshot see in github](https://github.com/SwagLag/DIP-mapreduce/blob/main/docimages/pycharm64_3eY3OltY9j.png?raw=true)
 
 In de tweede stap wordt van de tekst met engelse en nederlandse
 regels door elkaar deels hetzelfde gedaan; van regels naar paren
@@ -58,4 +72,4 @@ algoritme. Uiteindelijk klassificeerde hij in totaal 12 labels fout (het hoort
 
 Uiteindelijke output:
 
-![alt text](https://github.com/SwagLag/DIP-mapreduce/blob/main/docimages/pycharm64_lXcrSmeuW6.png?raw=true)
+![screenshot see in github](https://github.com/SwagLag/DIP-mapreduce/blob/main/docimages/pycharm64_lXcrSmeuW6.png?raw=true)
